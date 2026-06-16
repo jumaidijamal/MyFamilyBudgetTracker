@@ -3,7 +3,6 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from config import (
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 
@@ -21,7 +20,6 @@ BOT_STARTED_AT = (
 
 sheet_service = (
     SheetService(
-        CREDENTIAL_FILE,
         SPREADSHEET_ID
     )
 )
