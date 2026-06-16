@@ -17,6 +17,8 @@ from bot.handlers.summary_handler import summary
 from bot.handlers.delete_handler import delete
 from bot.handlers.undo_handler import undo
 from bot.handlers.edit_handler import edit_transaction
+from bot.handlers.health_handler import health
+
 
 app = (
     Application
@@ -144,6 +146,16 @@ app.add_handler(
     CommandHandler(
         "edit",
         edit_transaction
+    )
+)
+
+# ==========================
+# /HEALTH
+# ==========================
+app.add_handler(
+    CommandHandler(
+        "health",
+        health
     )
 )
 
