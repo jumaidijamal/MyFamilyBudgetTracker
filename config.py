@@ -11,6 +11,6 @@ SPREADSHEET_ID = os.getenv(
     "SPREADSHEET_ID"
 )
 
-CREDENTIAL_FILE = os.getenv(
-    "CREDENTIAL_FILE"
+GOOGLE_CREDENTIALS = os.getenv(
+    "GOOGLE_CREDENTIALS"
 )

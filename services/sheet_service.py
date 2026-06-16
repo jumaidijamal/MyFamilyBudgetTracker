@@ -1,4 +1,6 @@
-import gspread
+import json
+import os
+import gspread  
 from google.oauth2.service_account import Credentials
 
 SCOPES = [
@@ -15,10 +17,19 @@ class SheetService:
         spreadsheet_id
     ):
 
-        creds = Credentials.from_service_account_file(
-            credential_file,
+        credentials_info = json.loads(
+            os.getenv("GOOGLE_CREDENTIALS")
+        )
+
+        creds = Credentials.from_service_account_info(
+            credentials_info,
             scopes=SCOPES
         )
+
+        #creds = Credentials.from_service_account_file(
+        #    credential_file,
+        #    scopes=SCOPES
+        #)
 
         self.client = gspread.authorize(creds)
         self.spreadsheet = (
