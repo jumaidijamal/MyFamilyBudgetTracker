@@ -2,7 +2,6 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from config import (
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 
@@ -40,7 +39,6 @@ from services.user_service import (
 # ==========================
 
 sheet_service = SheetService(
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 

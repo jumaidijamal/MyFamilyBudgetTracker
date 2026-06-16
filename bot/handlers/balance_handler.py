@@ -4,7 +4,6 @@ from telegram.ext import (
 )
 
 from config import (
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 
@@ -23,7 +22,6 @@ from utils.money_helper import (
 
 sheet_service = (
     SheetService(
-        CREDENTIAL_FILE,
         SPREADSHEET_ID
     )
 )

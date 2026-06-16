@@ -7,7 +7,6 @@ from services.category_service import (
 )
 
 sheet_service = SheetService(
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 

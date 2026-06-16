@@ -4,7 +4,6 @@ from telegram.ext import (
 )
 
 from config import (
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 
@@ -22,7 +21,6 @@ from services.transaction_service import (
 
 sheet_service = (
     SheetService(
-        CREDENTIAL_FILE,
         SPREADSHEET_ID
     )
 )

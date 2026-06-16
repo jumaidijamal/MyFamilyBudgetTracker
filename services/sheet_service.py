@@ -13,7 +13,6 @@ class SheetService:
 
     def __init__(
         self,
-        credential_file,
         spreadsheet_id
     ):
 
@@ -27,7 +26,6 @@ class SheetService:
         )
 
         #creds = Credentials.from_service_account_file(
-        #    credential_file,
         #    scopes=SCOPES
         #)
 
