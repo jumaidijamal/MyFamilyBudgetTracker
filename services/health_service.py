@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class HealthService:
 
     def __init__(
@@ -46,23 +47,24 @@ class HealthService:
 
         return {
 
-            "🏥 Health Status\n\n"
-
-            "🤖 Bot status":
+            "status":
                 "✅ Online",
 
-            "👤 users":
+            "users":
                 len(users),
 
-            "👛 wallets":
+            "wallets":
                 len(wallets),
 
-            "📂 categories":
+            "categories":
                 len(categories),
 
-            "📄 transactions":
+            "transactions":
                 len(transactions),
 
-            "🕒 server time":
+            "server_time":
                 datetime.now()
+                .strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
         }

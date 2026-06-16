@@ -30,30 +30,43 @@ async def health(
     context: ContextTypes.DEFAULT_TYPE
 ):
 
-    data = (
-        health_service
-        .get_health()
-    )
+    try:
+        data = (
+            health_service
+            .get_health()
+        )
+
+    except Exception as e:
+
+        await (
+            update
+            .message
+            .reply_text(
+                f"❌ Health Check Failed\n\n{str(e)}"
+            )
+        )
+
+        return
 
     message = f"""
-🟢 Budget Tracker Bot
+🏥 Health Status
 
-Bot Status
+🤖 Bot Status
 {data['status']}
 
-Users
+👤 Users
 {data['users']}
 
-Wallets
+👛 Wallets
 {data['wallets']}
 
-Categories
+📂 Categories
 {data['categories']}
 
-Transactions
+📄 Transactions
 {data['transactions']}
 
-Server Time
+🕒 Server Time
 {data['server_time']}
 """
 
