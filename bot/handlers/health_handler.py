@@ -16,7 +16,6 @@ from services.health_service import (
 
 sheet_service = (
     SheetService(
-        CREDENTIAL_FILE,
         SPREADSHEET_ID
     )
 )
