@@ -2,7 +2,6 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from config import (
-    CREDENTIAL_FILE,
     SPREADSHEET_ID
 )
 
