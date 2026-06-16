@@ -18,6 +18,20 @@ from bot.handlers.delete_handler import delete
 from bot.handlers.undo_handler import undo
 from bot.handlers.edit_handler import edit_transaction
 from bot.handlers.health_handler import health
+from bot.handlers.admin_handler import admin
+from bot.handlers.export_handler import export
+from bot.handlers.setbudget_handler import setbudget
+
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters
+)
+
+from bot.handlers.unknown_handler import (
+    unknown
+)
 
 
 app = (
@@ -159,9 +173,46 @@ app.add_handler(
     )
 )
 
+# ==========================
+# /ADMIN
+# ==========================
+app.add_handler(
+    CommandHandler(
+        "admin",
+        admin
+    )
+)
+
+# ==========================
+# /EXPORT
+# ==========================
+app.add_handler(
+    CommandHandler(
+        "export",
+        export
+    )
+)
+
+# ==========================
+# /SETBUDGET
+# ==========================
+app.add_handler(
+    CommandHandler(
+        "setbudget",
+        setbudget
+    )
+)
+
 print(
     "Bot Running..."
 )
 # print(app.handlers)
 
 app.run_polling()
+
+app.add_handler(
+    MessageHandler(
+        filters.COMMAND,
+        unknown
+    )
+)

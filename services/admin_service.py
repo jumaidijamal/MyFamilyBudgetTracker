@@ -1,16 +1,22 @@
 from datetime import datetime
 
-class HealthService:
+
+class AdminService:
 
     def __init__(
         self,
-        sheet_service
+        sheet_service,
+        started_at
     ):
         self.sheet_service = (
             sheet_service
         )
 
-    def get_health(self):
+        self.started_at = (
+            started_at
+        )
+
+    def get_dashboard(self):
 
         users = (
             self.sheet_service
@@ -44,25 +50,38 @@ class HealthService:
             .get_all_records()
         )
 
+        uptime = (
+            datetime.now()
+            - self.started_at
+        )
+
         return {
 
-            "🏥 Health Status\n\n"
+            "status":
+                "Online",
 
-            "🤖 Bot status":
-                "✅ Online",
-
-            "👤 users":
+            "users":
                 len(users),
 
-            "👛 wallets":
+            "wallets":
                 len(wallets),
 
-            "📂 categories":
+            "categories":
                 len(categories),
 
-            "📄 transactions":
+            "transactions":
                 len(transactions),
 
-            "🕒 server time":
-                datetime.now()
+            "uptime":
+                str(
+                    uptime
+                ).split(
+                    "."
+                )[0],
+
+            "server_time":
+                datetime.now(),
+
+            "version":
+                "v1.0.0"
         }
