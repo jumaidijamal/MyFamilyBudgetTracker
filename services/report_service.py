@@ -284,7 +284,7 @@ class ReportService:
             "income":
                 income,
 
-            "savings":
+            "saving":
                 saving,
 
             "net":
@@ -436,7 +436,7 @@ class ReportService:
             "income":
                 income,
 
-            "savings":
+            "saving":
                 saving,
 
             "net":
