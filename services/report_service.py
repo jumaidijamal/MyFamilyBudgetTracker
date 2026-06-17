@@ -284,8 +284,11 @@ class ReportService:
             "income":
                 income,
 
+            "savings":
+                saving,
+
             "net":
-                income - expense,
+                income - expense - saving,
 
             "categories":
                 categories,
@@ -390,6 +393,23 @@ class ReportService:
             ):
 
                 expense += amount
+
+                categories[
+                    category
+                ] = (
+                    categories.get(
+                        category,
+                        0
+                    )
+                    + amount
+                )
+            
+            elif (
+                trx_type
+                == "savings"
+            ):
+
+                saving += amount
 
                 categories[
                     category
