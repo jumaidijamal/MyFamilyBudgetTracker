@@ -130,7 +130,7 @@ class ReportService:
             elif trx_type == "expense":
                 expense += amount
 
-            elif trx_type == "saving":
+            elif trx_type == "savings":
                 saving += amount
 
 

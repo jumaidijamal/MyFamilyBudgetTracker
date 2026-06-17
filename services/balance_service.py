@@ -76,7 +76,7 @@ class BalanceService:
 
                 if trx_type in (
                     "expense",
-                    "saving"
+                    "savings"
                 ):
                     current -= amount
 
