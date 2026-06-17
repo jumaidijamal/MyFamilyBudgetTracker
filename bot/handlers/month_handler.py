@@ -75,6 +75,9 @@ async def month(
 💵 Income
 {MoneyHelper.format_rupiah(summary['income'])}
 
+🏦 Saving
+{MoneyHelper.format_rupiah(summary['saving'])}
+
 💰 Net
 {MoneyHelper.format_rupiah(summary['net'])}
 """
