@@ -99,6 +99,7 @@ class ReportService:
 
         income = 0
         expense = 0
+        saving = 0
 
         categories = {}
 
@@ -123,16 +124,15 @@ class ReportService:
                 ]
             )
 
-            if (
-                trx_type
-                == "income"
-            ):
-
+            if trx_type == "income":
                 income += amount
 
-            else:
-
+            elif trx_type == "expense":
                 expense += amount
+
+            elif trx_type == "saving":
+                saving += amount
+
 
                 categories[
                     category
@@ -149,12 +149,16 @@ class ReportService:
             "income":
                 income,
 
+            "saving":
+                saving,
+
             "expense":
                 expense,
 
             "net":
                 income
-                - expense,
+                - expense
+                - saving,
 
             "categories":
                 categories

@@ -86,3 +86,44 @@ class CategoryService:
         )
 
         return suggestions
+    
+    def get_category_by_type(
+        self,
+        category_name,
+        trx_type
+    ):
+
+        category_name = (
+            category_name
+            .lower()
+            .strip()
+        )
+
+        trx_type = (
+            trx_type
+            .lower()
+            .strip()
+        )
+
+        categories = (
+            self.get_all_categories()
+        )
+
+        for category in categories:
+
+            if (
+                category[
+                    "CategoryName"
+                ]
+                .lower()
+                == category_name
+                and
+                category[
+                    "CategoryType"
+                ]
+                .lower()
+                == trx_type
+            ):
+                return category
+
+        return None

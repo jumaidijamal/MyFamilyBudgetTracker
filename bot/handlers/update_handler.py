@@ -245,10 +245,9 @@ async def update_transaction(
 
         category = (
             category_service
-            .get_category(
-                trx[
-                    "category"
-                ]
+            .get_category_by_type(
+                trx["category"],
+                trx["type"]
             )
         )
 

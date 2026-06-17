@@ -74,16 +74,13 @@ class BalanceService:
                     ]
                 )
 
-                if (
-                    trx_type
-                    == "expense"
+                if trx_type in (
+                    "expense",
+                    "saving"
                 ):
                     current -= amount
 
-                elif (
-                    trx_type
-                    == "income"
-                ):
+                elif trx_type == "income":
                     current += amount
 
                 else:

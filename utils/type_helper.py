@@ -13,7 +13,14 @@ class TypeHelper:
         "income": "income",
         "pemasukan": "income",
         "masuk": "income",
-        "gaji": "income"
+        "gaji": "income",
+
+        "s": "savings",
+        "sav": "savings",
+        "savings": "savings",
+        "tabungan": "savings",
+        "simpan": "savings",
+        "nabung": "savings",
     }
 
     @classmethod
