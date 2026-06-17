@@ -62,7 +62,7 @@ async def today(
         f"{MoneyHelper.format_rupiah(summary['income'])}\n\n"
 
         f"🏦 Saving\n"
-        f"{MoneyHelper.format_rupiah(summary['saving'])}\n\n"
+        f"{MoneyHelper.format_rupiah(summary['savings'])}\n\n"
 
         f"💰 Net\n"
         f"{MoneyHelper.format_rupiah(summary['net'])}"
