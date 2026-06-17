@@ -152,7 +152,7 @@ class ReportService:
             "expense":
                 expense,
             
-            "savings":
+            "saving":
                 saving,
 
             "net":
@@ -189,6 +189,7 @@ class ReportService:
 
         expense = 0
         income = 0
+        saving = 0
         categories = {}
 
         for row in rows:
@@ -250,6 +251,13 @@ class ReportService:
             ):
 
                 expense += amount
+
+            elif (
+                trx_type
+                == "savings"
+            ):
+
+                saving += amount
 
                 categories[
                     category
@@ -315,6 +323,7 @@ class ReportService:
 
         expense = 0
         income = 0
+        saving = 0
         categories = {}
 
         for row in rows:
@@ -407,8 +416,11 @@ class ReportService:
             "income":
                 income,
 
+            "savings":
+                saving,
+
             "net":
-                income - expense,
+                income - expense - saving,
 
             "categories":
                 categories,
