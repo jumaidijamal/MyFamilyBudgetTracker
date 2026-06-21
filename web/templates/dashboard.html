@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Modern Dark Theme Berdasarkan Gambar Referensi */
+        body {
+            background-color: #0d1117;
+            color: #f0f6fc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Card bergaya Premium Glass Dark */
+        .card {
+            background-color: #161b22 !important;
+            border: 1px solid #30363d !important;
+            border-radius: 16px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+            color: #c9d1d9 !important;
+        }
+
+        /* Tipografi */
+        h2, h3, h4, h5, h6 {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        label {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Form Custom Kontrol (Filter & Search) agar menyatu dengan Dark Theme */     
+        .form-control, .form-select {
+            background-color: #0d1117 !important;
+            border: 1px solid #30363d !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #58a6ff !important;
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25) !important;
+        }
+
+        .form-control::placeholder{
+            color:#8b949e;
+        }
+
+        /* Modifikasi Card Summary Atas */
+        .card-summary {
+            border: 1px solid #30363d !important;
+            background-color: #161b22 !important;
+            padding: 0.5rem;
+        }
+        .card-summary h6 { 
+            color: #94a3b8 !important;
+            font-size: 0.85rem;
+            text-transform: none;
+            letter-spacing: normal;
+            margin-bottom: 0.5rem;
+        }
+        .card-summary h3 { 
+            font-weight: 800;
+            font-size: 1.65rem;
+            margin-bottom: 2px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-summary p { 
+            color: #8b949e !important;
+            font-size: 0.85rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .card-summary .icon-wrapper {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 1.35rem;
+        }
+
+        /* Pewarnaan Teks Indikator Angka dan Icon Bulat Sesuai Gambar */
+        .bg-income h3 { color: #2ea44f !important; }
+        .bg-income .icon-wrapper { background: rgba(46, 164, 79, 0.15); color: #2ea44f; }
+
+        .bg-expense h3 { color: #f85149 !important; }
+        .bg-expense .icon-wrapper { background: rgba(248, 81, 73, 0.15); color: #f85149; }
+
+        .bg-savings h3 { color: #2ea44f !important; } /* Di gambar Net Flow berwarna hijau */
+        .bg-savings .icon-wrapper { background: rgba(46, 164, 79, 0.15); color: #2ea44f; }
+
+        .bg-balance h3 { color: #6366f1 !important; }
+        .bg-balance .icon-wrapper { background: rgba(88, 166, 255, 0.15); color: #6366f1; }
+
+        /* KPI Card Pendukung (Kecil di bawah Chart / bagian lainnya) */
+        .kpi-card {
+            padding: 1.25rem !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .kpi-card h6 {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .kpi-card h3 {
+            font-size: 1.35rem;
+            color: #ffffff;
+            margin-bottom: 0;
+        }
+
+        /* Chart Wrapper */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+
+        /* Garis Pembatas (HR) */
+        hr {
+            border-color: #1e2530;
+            opacity: 1;
+            margin: 2rem 0;
+        }
+
+        /* Progress Bar Anggaran (Realisasi & Alokasi) */
+        .progress-budget {
+            height: 10px;
+            border-radius: 10px;
+            background: #1a202c;
+        }
+
+        .progress-budget-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: .3s;
+        }
+
+        /* List Dompet / Wallets */
+        .wallet-list {
+            max-height: 430px;
+            overflow-y: auto;
+        }
+
+        .wallet-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            background: #0d1117;
+        }
+
+        .wallet-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .wallet-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(88, 166, 255, 0.1);
+            color: #6366f1;
+            font-size: 1.2rem;
+        }
+
+        .budget-scroll {
+            max-height: 410px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 5px;
+        }
+
+        /* Styling Tabel Riwayat Transaksi */
+        .table {
+            color: #c9d1d9 !important;
+            --bs-table-bg: transparent !important;
+            --bs-table-hover-bg: #161b26 !important;
+            border-color: #30363d !important;
+        }
+        
+        .table th {
+            color: #8b949e !important;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 2px solid #30363d !important;
+            padding: 12px 8px;
+        }
+
+        .table td {
+            padding: 14px 8px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #21262d;
+            color: #c9d1d9;
+        }
+
+        /* Badge Tambahan untuk Keperluan Tipe Transaksi */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        
+        .badge.bg-secondary {
+            background-color: #2d3748 !important;
+            color: #a0aec0;
+        }
+
+        /* Custom Scrollbar untuk container scroll */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0e14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container py-4 py-md-5">
+
+    <div class="d-flex align-items-center mb-4 justify-content-between">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-wallet2 text-primary fs-2 me-3"></i>
+            <h2 class="m-0 fs-4 fw-bold">Budget Tracker Dashboard</h2>
+        </div>
+        <button id="clearFilter" class="btn btn-link text-danger text-decoration-none small">
+            <i class="bi bi-trash me-1"></i> Bersihkan Semua Filter
+        </button>
+    </div>
+
+    <div class="card filter-card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md col-sm-6">
+                    <label>Tanggal Mulai</label>
+                    <input type="date" id="startDateFilter" class="form-control">
+                </div>
+
+                <div class="col-md col-sm-6">
+                    <label>Tanggal Selesai</label>
+                    <input type="date" id="endDateFilter" class="form-control">
+                </div>
+
+                <div class="col-md col-sm-4">
+                    <label>Pengguna</label>
+                    <select id="userFilter" class="form-select">
+                        <option value="">Semua Pengguna</option>
+                    </select>
+                </div>
+
+                <div class="col-md col-sm-4">
+                    <label>Kategori</label>
+                    <select id="categoryFilter" class="form-select">
+                        <option value="">Semua Kategori</option>
+                    </select>
+                </div>
+
+                <div class="col-md col-sm-4">
+                    <label>Dompet</label>
+                    <select id="walletFilter" class="form-select">
+                        <option value="">Semua Dompet</option>
+                    </select>
+                </div>
+
+                <div class="col-md d-none">
+                    <label>Type</label>
+                    <select id="typeFilter" class="form-select">
+                        <option value="">Semua Type</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-summary bg-income">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6>Total Pendapatan</h6>
+                        <h3 id="income">Rp0</h3>
+                    </div>
+                    <div class="icon-wrapper"><i class="bi bi-arrow-down-left"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-summary bg-expense">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6>Total Pengeluaran</h6>
+                        <h3 id="expense">Rp0</h3>
+                    </div>
+                    <div class="icon-wrapper"><i class="bi bi-arrow-up-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-summary bg-savings">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6>Net Flow (Arus Bersih)</h6>
+                        <h3 id="savings">Rp0</h3>
+                    </div>
+                    <div class="icon-wrapper"><i class="bi bi-scale"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-summary bg-balance">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6>Estimasi Saldo Terakhir</h6>
+                        <h3 id="balance">Rp0</h3>
+                    </div>
+                    <div class="icon-wrapper"><i class="bi bi-wallet2"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="m-0 fs-6 text-white fw-bold">
+                            Tren Arus Kas Transaksi
+                        </h5>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="trendMode" id="dailyTrend" checked>
+                            <label class="btn btn-outline-secondary btn-sm" for="dailyTrend">Hari</label>
+
+                            <input type="radio" class="btn-check" name="trendMode" id="monthlyTrend">
+                            <label class="btn btn-outline-secondary btn-sm" for="monthlyTrend">Bulan</label>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="mb-4 fs-6 text-white fw-bold">
+                        Proporsi Kategori Pengeluaran
+                    </h5>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1 fs-6">Realisasi & Alokasi Anggaran</h5>
+                    <p class="text-secondary small mb-4">Menampilkan sisa budget kategori dari data Budget.csv</p>
+                    <div id="budgetProgressContainer" class="budget-scroll">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1 fs-6">Daftar Dompet (Wallets) & Sisa Saldo</h5>
+                    <p class="text-secondary small mb-4">Saldo saat ini pada masing-masing akun terdaftar.</p>
+                    <div id="walletList" class="wallet-list">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-none">
+        <h3 id="transactionCount">-</h3>
+        <h3 id="topCategory">-</h3>
+        <h3 id="topUser">-</h3>
+        <h3 id="avgExpense">-</h3>
+        <canvas id="userChart"></canvas>
+    </div>
+
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-body">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
+                <div>
+                    <h4 class="fw-bold mb-1 fs-5">Rincian Riwayat Transaksi</h4>
+                    <small class="text-secondary">Total data yang disaring berdasarkan filter di atas.</small>
+                </div>
+                <input type="text" id="transactionSearch" class="form-control" placeholder="Cari deskripsi atau kategori..." style="max-width:300px">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID Transaksi</th>
+                            <th>Tanggal</th>
+                            <th>Pengguna</th>
+                            <th>Type</th>
+                            <th>Kategori</th>
+                            <th>Dompet</th>
+                            <th>Keterangan</th>
+                            <th class="text-end">Jumlah (Amount)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionBody">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <span id="transactionInfo" class="text-secondary small"></span>
+                <div>
+                    <button class="btn btn-outline-secondary btn-sm me-2" id="prevPage">Sebelumnya</button>
+                    <button class="btn btn-primary btn-sm" id="nextPage">Selanjutnya</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let categoryChart
+    let userChart
+    let trendChart
+    let trendMode = "daily";
+    let currentPage = 1;
+    const pageSize = 10;
+    
+    // Penyesuaian Warna Chart.js untuk Dark Theme (Sesuai Gambar)
+    Chart.defaults.color = '#8b949e';
+    Chart.defaults.borderColor = '#30363d';
+
+    // Palette warna modern neon sesuai tampilan donut chart di gambar referensi
+    /*const darkPalette = ['#3b82f6', '#10b981', '#ef4444', '#f59e0b', '#6366f1', '#ec4899', '#14b8a6', '#a855f7'];*/
+
+    // Palette warna neon premium untuk chart lingkaran donut
+    const darkPalette = ['#58a6ff', '#2ea44f', '#f85149', '#ffaa2b', '#6e7681', '#bc8cff', '#14b8a6', '#a855f7'];
+
+    function money(v) {
+        return "Rp " + Number(v).toLocaleString("id-ID");
+    }
+
+    // FETCH KPI METRICS
+    async function loadSummary() {
+        const res = await fetch(`/api/dashboard/summary?${getQuery()}`);
+        const data = await res.json();
+        income.innerHTML = money(data.income);
+        expense.innerHTML = money(data.expense);
+        savings.innerHTML = money(data.savings);
+        balance.innerHTML = money(data.balance);
+    }
+
+    async function loadCategory() {
+        const res = await fetch(`/api/dashboard/category?${getQuery()}`);
+        const data = await res.json();
+        const ctx = document.getElementById("categoryChart");
+        if (categoryChart) {
+            categoryChart.destroy();
+            categoryChart = null;
+        }
+
+        categoryChart = new Chart(ctx, {
+            type: "doughnut", // Diubah ke doughnut agar persis menyerupai lingkaran bolong di gambar
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.values,
+                    backgroundColor: darkPalette,
+                    borderColor: "#11151d",
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    async function loadUser() {
+        const res = await fetch(`/api/dashboard/user?${getQuery()}`);
+        const data = await res.json();
+        const ctx = document.getElementById("userChart");
+        if (userChart) {
+            userChart.destroy();
+            userChart = null;
+        }
+
+        userChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.values,
+                    backgroundColor: "#3b82f6"
+                }]
+            }
+        });
+    }
+
+    async function loadKpi() {
+        const res = await fetch(`/api/dashboard/kpi?${getQuery()}`);
+        const data = await res.json();
+        document.getElementById("transactionCount").innerText = data.transaction_count;
+        document.getElementById("topCategory").innerText = data.top_category ? data.top_category.name : "-";
+        document.getElementById("topUser").innerText = data.top_user ? data.top_user.name : "-";
+        document.getElementById("avgExpense").innerText = "Rp" + Number(data.average_expense).toLocaleString("id-ID");
+    }
+
+    // FETCH TREND CHART (BAR CHART SESUAI GAMBAR REFERENSI)
+    async function loadTrend() {
+        const query = getQuery();
+        const url = query ? `/api/dashboard/trend?${query}&mode=${trendMode}` : `/api/dashboard/trend?mode=${trendMode}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const ctx = document.getElementById("trendChart").getContext("2d");
+        
+        if (trendChart) {
+            trendChart.destroy();
+            trendChart = null;
+        }
+
+        trendChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        label: "Pendapatan (Income)",
+                        data: data.income,
+                        backgroundColor: "rgba(16, 185, 129, 0.75)",
+                        borderColor: "#10b981",
+                        borderWidth: 1,
+                        borderRadius: 4
+                    },
+                    {
+                        label: "Pengeluaran (Expense)",
+                        data: data.expense,
+                        backgroundColor: "rgba(239, 68, 68, 0.75)",
+                        borderColor: "#ef4444",
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: "top" },
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#1e2530' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    async function loadOptions() {
+        const res = await fetch("/api/dashboard/options");
+        const data = await res.json();
+        userFilter.innerHTML = '<option value="">Semua Pengguna</option>';
+        categoryFilter.innerHTML = '<option value="">Semua Kategori</option>';
+        walletFilter.innerHTML = '<option value="">Semua Dompet</option>';
+        typeFilter.innerHTML = '<option value="">Semua Jenis</option>';
+        
+        (data.users || []).forEach(x => {
+            userFilter.insertAdjacentHTML("beforeend", `<option value="${x}">${x}</option>`);
+        });
+        (data.categories || []).forEach(x => {
+            categoryFilter.insertAdjacentHTML("beforeend", `<option value="${x}">${x}</option>`);
+        });
+        (data.wallets || []).forEach(x => {
+            walletFilter.insertAdjacentHTML("beforeend", `<option value="${x}">${x}</option>`);
+        });
+        (data.types || []).forEach(x => {
+            typeFilter.insertAdjacentHTML("beforeend", `<option value="${x}">${x}</option>`);
+        });
+    }
+
+    function getQuery() {
+        const p = new URLSearchParams();
+        if (startDateFilter.value) p.append("start_date", startDateFilter.value);
+        if (endDateFilter.value) p.append("end_date", endDateFilter.value);
+        if (userFilter.value) p.append("user", userFilter.value);
+        if (categoryFilter.value) p.append("category", categoryFilter.value);
+        if (walletFilter.value) p.append("wallet", walletFilter.value);
+        if (typeFilter.value) p.append("trx_type", typeFilter.value);
+        return p.toString();
+    }
+
+    clearFilter.onclick = async () => {
+        startDateFilter.value = "";
+        endDateFilter.value = "";
+        userFilter.value = "";
+        categoryFilter.value = "";
+        walletFilter.value = "";
+        typeFilter.value = "";
+        await reloadDashboard();
+    };
+
+    [startDateFilter, endDateFilter, userFilter, categoryFilter, walletFilter, typeFilter].forEach(el => {
+        el.addEventListener("change", reloadDashboard);
+    });
+
+    async function loadBudgetProgress() {
+        const query = getQuery();
+        const url = query ? `/api/dashboard/budget-progress?${query}` : `/api/dashboard/budget-progress`;
+        const res = await fetch(url);
+        const data = await res.json();
+        let html = "";
+        
+        data.forEach(x => {
+            let color = "#6366f1"; // Default warna ungu neon sesuai gambar
+            if (x.percentage >= 70 && x.percentage < 100) { color = "#f59e0b"; }
+            if (x.percentage >= 100) { color = "#ef4444"; }
+
+            html += `
+            <div class="mb-4">
+                <div class="d-flex justify-content-between mb-2 small">
+                    <div>
+                        <strong>${x.category}</strong> <span class="text-secondary">(${x.user})</span>
+                    </div>
+                    <div class="text-end">
+                        <span class="text-white fw-bold">${money(x.spent)}</span> / <span class="text-secondary">${money(x.budget)}</span>
+                        <span style="color: ${color}; font-weight:bold; margin-left:5px;">(${x.percentage}%)</span>
+                    </div>
+                </div>
+                <div class="progress-budget">
+                    <div class="progress-budget-bar" style="width:${Math.min(x.percentage, 100)}%; background:${color}"></div>
+                </div>
+            </div>`;
+        });
+        document.getElementById("budgetProgressContainer").innerHTML = html;
+    }
+
+    async function loadWalletBalance() {
+        const query = getQuery();
+        const url = query ? `/api/dashboard/wallet-balance?${query}` : `/api/dashboard/wallet-balance`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const container = document.getElementById("walletList");
+        container.innerHTML = "";
+
+        data.forEach(x => {
+            container.insertAdjacentHTML("beforeend", `
+                <div class="wallet-item">
+                    <div class="wallet-left">
+                        <div class="wallet-icon"><i class="bi bi-credit-card-2-front"></i></div>
+                        <div>
+                            <div class="fw-bold text-white small">${x.wallet} <span class="text-secondary fw-normal opacity-75" style="font-size:11px;">(${x.user || x.owner || ''})</span></div>
+                            <div class="text-secondary" style="font-size: 12px;">${x.wallet_code}</div>
+                        </div>
+                    </div>
+                    <div class="fw-bold text-white fs-6">${money(x.balance)}</div>
+                </div>`
+            );
+        });
+    }
+
+    async function loadTransactions() {
+        const query = getQuery();
+        const search = transactionSearch.value;
+        const url = `/api/dashboard/transactions?${query}&page=${currentPage}&page_size=${pageSize}&search=${encodeURIComponent(search)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        transactionBody.innerHTML = "";
+        data.rows.forEach(row => {
+            const amount = Number(row.amount).toLocaleString("id-ID");
+            
+            // Penyesuaian Badge agar sinkron dengan gambar
+            let badge = '';
+            if(row.type === "expenses" || row.type === "expense") {
+                badge = `<span class="badge bg-danger bg-opacity-10 text-danger">Expense</span>`;
+            } else if (row.type === "income") {
+                badge = `<span class="badge bg-success bg-opacity-10 text-success">Income</span>`;
+            } else {
+                badge = `<span class="badge bg-primary bg-opacity-10 text-primary">Savings</span>`;
+            }
+
+            const isExpense = row.type === "expenses" || row.type === "expense";
+            const signHtml = isExpense 
+                ? `<span class="text-danger fw-bold">- Rp${amount}</span>` 
+                : `<span class="text-success fw-bold">+ Rp${amount}</span>`;
+
+            transactionBody.insertAdjacentHTML("beforeend", `
+                <tr>
+                    <td class="text-secondary">${row.transaction_id}</td>
+                    <td>${row.date}</td>
+                    <td>${row.user}</td>
+                    <td>${badge}</td>
+                    <td>${row.category}</td>
+                    <td><span class="text-secondary">${row.wallet}</span></td>
+                    <td class="text-light-50"><em>${row.description ?? ""}</em></td>
+                    <td class="text-end">${signHtml}</td>
+                </tr>`
+            );
+        });
+
+        const start = (currentPage - 1) * pageSize + 1;
+        const end = Math.min(currentPage * pageSize, data.total);
+        transactionInfo.innerText = `Menampilkan ${start}-${end} dari ${data.total} baris`;
+        prevPage.disabled = currentPage === 1;
+        nextPage.disabled = end >= data.total;
+    }
+
+    async function reloadDashboard() {
+        try { await loadSummary(); } catch(e) { console.error(e); }
+        try { await loadCategory(); } catch(e) { console.error(e); }
+        try { await loadUser(); } catch(e) { console.error(e); }
+        try { await loadTrend(); } catch(e) { console.error(e); }
+        try { await loadKpi(); } catch(e) { console.error(e); }
+        try { await loadBudgetProgress(); } catch(e) { console.error(e); }
+        try { await loadWalletBalance(); } catch(e) { console.error(e); }
+        try { await loadTransactions(); } catch(e) { console.error(e); }
+    }
+
+    window.onload = async () => {
+        document.getElementById("dailyTrend").addEventListener("click", async () => {
+            trendMode = "daily";
+            await loadTrend();
+        });
+        document.getElementById("monthlyTrend").addEventListener("click", async () => {
+            trendMode = "monthly";
+            await loadTrend();
+        });
+        prevPage.onclick = async () => {
+            if (currentPage > 1) {
+                currentPage--;
+                await loadTransactions();
+            }
+        };
+        nextPage.onclick = async () => {
+            currentPage++;
+            await loadTransactions();
+        };
+        transactionSearch.addEventListener("input", async () => {
+            currentPage = 1;
+            await loadTransactions();
+        });
+
+        await loadOptions();
+        await reloadDashboard();
+    };
+</script>
+
+</body>
+</html>

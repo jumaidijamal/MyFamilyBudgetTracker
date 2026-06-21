@@ -14,3 +14,7 @@ SPREADSHEET_ID = os.getenv(
 GOOGLE_CREDENTIALS = os.getenv(
     "GOOGLE_CREDENTIALS"
 )
+
+INCOME_TYPE = "income"
+EXPENSE_TYPE = "expenses"
+SAVINGS_TYPE = "savings"
