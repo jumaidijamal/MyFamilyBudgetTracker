@@ -21,10 +21,6 @@ from bot.handlers.health_handler import health
 from bot.handlers.admin_handler import admin
 from bot.handlers.export_handler import export
 from bot.handlers.setbudget_handler import setbudget
-from fastapi.templating import (
-    Jinja2Templates
-)
-from fastapi import Request
 
 from telegram.ext import (
     Application,
@@ -38,10 +34,6 @@ from bot.handlers.unknown_handler import (
 )
 
 
-templates = Jinja2Templates(
-    directory="templates"
-)
-
 app = (
     Application
     .builder()
@@ -50,17 +42,6 @@ app = (
     )
     .build()
 )
-
-@app.get("/dashboard")
-async def dashboard_page(
-    request: Request
-):
-    return templates.TemplateResponse(
-        "dashboard.html",
-        {
-            "request": request
-        }
-    )
 
 # ==========================
 # /START
