@@ -13,7 +13,7 @@ keyboard = InlineKeyboardMarkup([
     [
         InlineKeyboardButton(
             text="📊 Dashboard",
-            web_app=WebAppInfo(DASHBOARD_URL)
+            webapp=WebAppInfo(DASHBOARD_URL)
         )
     ]
 ])
@@ -93,8 +93,3 @@ Selamat mengelola keuangan Anda! 💰🚀
             reply_markup=keyboard
         )
     )
-
-    # await update.message.reply_text(
-    #     "Selamat datang di Budget Tracker!",
-    #     reply_markup=keyboard
-    # )
