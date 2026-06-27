@@ -7,6 +7,7 @@ from telegram import (
 )
 
 from config import DASHBOARD_URL
+print(DASHBOARD_URL)
 
 keyboard = InlineKeyboardMarkup([
     [
@@ -87,11 +88,13 @@ Selamat mengelola keuangan Anda! 💰🚀
         update
         .message
         .reply_text(
-            message
+            #message
+            "Selamat datang di Budget Tracker!",
+            reply_markup=keyboard
         )
     )
 
-    await update.message.reply_text(
-    "Selamat datang di Budget Tracker!",
-    reply_markup=keyboard
-    )
+    # await update.message.reply_text(
+    #     "Selamat datang di Budget Tracker!",
+    #     reply_markup=keyboard
+    # )
