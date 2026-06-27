@@ -1,11 +1,17 @@
 from telegram import Update
+from telegram.ext import (
+    CallbackQueryHandler,
+    ContextTypes
+)
 
-from telegram.ext import ContextTypes
+from bot.keyboards.report_keyboard import report_keyboard
+from bot.keyboards.admin_keyboard import admin_keyboard
 
-from telegram.ext import CallbackQueryHandler
 
-
-async def home_callback(update, context):
+async def home_callback(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
 
     query = update.callback_query
 
@@ -16,26 +22,16 @@ async def home_callback(update, context):
     if data == "menu_report":
 
         await query.edit_message_text(
-
-            "📈 Report Menu",
-
+            text="📈 Report Menu",
             reply_markup=report_keyboard()
-
         )
 
     elif data == "menu_admin":
 
         await query.edit_message_text(
-
-            "⚙️ Admin",
-
+            text="⚙️ Admin Menu",
             reply_markup=admin_keyboard()
-
         )
 
 
-handler = CallbackQueryHandler(
-
-    home_callback
-
-)
+handler = CallbackQueryHandler(home_callback)

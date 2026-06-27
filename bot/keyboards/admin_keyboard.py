@@ -1,3 +1,6 @@
+from telegram import InlineKeyboardMarkup
+from telegram import InlineKeyboardButton
+
 def admin_keyboard():
 
     return InlineKeyboardMarkup(

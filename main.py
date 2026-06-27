@@ -22,7 +22,7 @@ from bot.handlers.admin_handler import admin
 from bot.handlers.export_handler import export
 from bot.handlers.setbudget_handler import setbudget
 from telegram import BotCommand
-#from bot.callbacks.home_callback import handler as home_callback_handler
+from bot.callbacks.home_callback import handler as home_callback_handler
 from telegram.ext import CallbackQueryHandler
 from bot.callbacks.home_callback import home_callback
 
@@ -234,9 +234,9 @@ app.add_handler(
 # ==========================
 # /HOME CALLBACK
 # ==========================
-# app.add_handler(
-#     home_callback_handler
-# )
+app.add_handler(
+    home_callback_handler
+)
 
 app.add_handler(
     CallbackQueryHandler(home_callback)
