@@ -13,7 +13,7 @@ keyboard = InlineKeyboardMarkup([
     [
         InlineKeyboardButton(
             text="📊 Dashboard",
-            webapp=WebAppInfo(DASHBOARD_URL)
+            web_app=WebAppInfo(DASHBOARD_URL)
         )
     ]
 ])
