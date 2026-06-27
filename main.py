@@ -21,6 +21,7 @@ from bot.handlers.health_handler import health
 from bot.handlers.admin_handler import admin
 from bot.handlers.export_handler import export
 from bot.handlers.setbudget_handler import setbudget
+from telegram import BotCommand
 
 from telegram.ext import (
     Application,
@@ -33,13 +34,37 @@ from bot.handlers.unknown_handler import (
     unknown
 )
 
+async def post_init(application):
+
+    await application.bot.set_my_commands([
+
+        BotCommand("start", "🏠 Main Menu"),
+        BotCommand("help", "📖 Bantuan"),
+
+        BotCommand("lapor", "➕ Tambah Transaksi"),
+        BotCommand("edit", "✏️ Edit Transaksi"),
+        BotCommand("delete", "🗑 Hapus Transaksi"),
+        BotCommand("undo", "↩ Undo"),
+
+        BotCommand("balance", "💰 Lihat Saldo"),
+        BotCommand("today", "📅 Laporan Hari Ini"),
+        BotCommand("week", "📆 Laporan Mingguan"),
+        BotCommand("month", "🗓 Laporan Bulanan"),
+        BotCommand("history", "📜 Riwayat"),
+        BotCommand("summary", "📊 Ringkasan"),
+
+        BotCommand("setbudget", "💵 Atur Budget"),
+        BotCommand("export", "📤 Export CSV"),
+
+        BotCommand("health", "❤️ Status Bot"),
+        BotCommand("admin", "⚙️ Admin")
+    ])
 
 app = (
     Application
     .builder()
-    .token(
-        BOT_TOKEN
-    )
+    .token(BOT_TOKEN)
+    .post_init(post_init)
     .build()
 )
 
