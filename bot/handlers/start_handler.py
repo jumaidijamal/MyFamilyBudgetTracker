@@ -1,95 +1,52 @@
 from telegram import Update
 from telegram.ext import ContextTypes
-from telegram import (
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    WebAppInfo
+
+from bot.keyboards.home_keyboard import (
+    get_home_keyboard
 )
 
-from config import DASHBOARD_URL
-print(DASHBOARD_URL)
-
-keyboard = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton(
-            text="📊 Dashboard",
-            web_app=WebAppInfo(DASHBOARD_URL)
-        )
-    ]
-])
 
 async def start(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
 
-    message = """
-💰 My Family Budget Tracker Bot
-Family Finance Platform
+    text = """
+💰 <b>My Family Budget Tracker</b>
 
-💡 Motto:
-"Catat uangmu hari ini, amankan masa depanmu."
+<i>Family Finance Platform</i>
 
-Selamat datang!
+━━━━━━━━━━━━━━━━━━
 
-Bot ini membantu Anda untuk:
+Selamat datang 👋
 
-💸 Mencatat pengeluaran (Expense)
-💵 Mencatat pemasukan (Income)
-👛 Memantau saldo setiap wallet
-📊 Membuat laporan harian, mingguan, dan bulanan
-💰 Mengelola budget per kategori
-📁 Export laporan ke CSV dan Excel
-☁️ Menyimpan data secara online 24/7
+Kelola seluruh keuangan keluarga dalam satu tempat.
 
-━━━━━━━━━━━━━━━
-🚀 Quick Start
-━━━━━━━━━━━━━━━
+✨ Fitur Utama
 
-1️⃣ Tambah transaksi
+💸 Catat transaksi
 
-/lapor
+👛 Kelola Wallet
 
-expense
-25000
-makan
-bca
-nasi goreng
+📊 Dashboard Interaktif
 
-2️⃣ Lihat saldo
+💰 Budget Management
 
-/balance
+📈 Financial Report
 
-3️⃣ Lihat laporan hari ini
+📤 Export CSV / Excel
 
-/today
+━━━━━━━━━━━━━━━━━━
 
-4️⃣ Atur budget
-
-/setbudget makan 1000000
-
-5️⃣ Lihat seluruh command
-
-/help
-
-━━━━━━━━━━━━━━━
-📌 Status
-━━━━━━━━━━━━━━━
-
-Version : Project#11
-Mode : Production
-Platform : Railway ☁️
-Database : Google Sheets 📊
-
-Selamat mengelola keuangan Anda! 💰🚀
+👇 Pilih menu di bawah.
 """
 
-    await (
-        update
-        .message
-        .reply_text(
-            #message
-            "Selamat datang di Budget Tracker!",
-            reply_markup=keyboard
-        )
+    await update.message.reply_text(
+
+        text,
+
+        parse_mode="HTML",
+
+        reply_markup=get_home_keyboard()
+
     )

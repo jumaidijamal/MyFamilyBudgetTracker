@@ -22,6 +22,7 @@ from bot.handlers.admin_handler import admin
 from bot.handlers.export_handler import export
 from bot.handlers.setbudget_handler import setbudget
 from telegram import BotCommand
+from bot.callbacks.home_callback import handler as home_callback_handler
 
 from telegram.ext import (
     Application,
@@ -226,6 +227,13 @@ app.add_handler(
         "setbudget",
         setbudget
     )
+)
+
+# ==========================
+# /HOME CALLBACK
+# ==========================
+app.add_handler(
+    home_callback_handler
 )
 
 print(
