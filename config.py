@@ -15,6 +15,10 @@ GOOGLE_CREDENTIALS = os.getenv(
     "GOOGLE_CREDENTIALS"
 )
 
+DASHBOARD_URL = os.getenv(
+    "DASHBOARD_URL"
+)
+
 INCOME_TYPE = "income"
 EXPENSE_TYPE = "expenses"
 SAVINGS_TYPE = "savings"

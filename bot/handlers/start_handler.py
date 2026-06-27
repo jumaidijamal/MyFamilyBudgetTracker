@@ -1,6 +1,21 @@
 from telegram import Update
 from telegram.ext import ContextTypes
+from telegram import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    WebAppInfo
+)
 
+from config import DASHBOARD_URL
+
+keyboard = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton(
+            text="📊 Dashboard",
+            web_app=WebAppInfo(DASHBOARD_URL)
+        )
+    ]
+])
 
 async def start(
     update: Update,
@@ -74,4 +89,9 @@ Selamat mengelola keuangan Anda! 💰🚀
         .reply_text(
             message
         )
+    )
+
+    await update.message.reply_text(
+    "Selamat datang di Budget Tracker!",
+    reply_markup=keyboard
     )
