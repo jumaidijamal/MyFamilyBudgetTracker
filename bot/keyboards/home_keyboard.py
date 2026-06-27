@@ -1,13 +1,13 @@
 from telegram import (
-    InlineKeyboardMarkup,
     InlineKeyboardButton,
+    InlineKeyboardMarkup,
     WebAppInfo
 )
 
 from config import DASHBOARD_URL
 
 
-def get_home_keyboard():
+def home_keyboard():
 
     return InlineKeyboardMarkup(
 
@@ -15,69 +15,48 @@ def get_home_keyboard():
 
             [
                 InlineKeyboardButton(
-                    text="📊 Dashboard",
+                    "📊 Dashboard",
                     web_app=WebAppInfo(DASHBOARD_URL)
                 )
             ],
 
             [
+
                 InlineKeyboardButton(
-                    text="💰 Balance",
-                    callback_data="balance"
+                    "💰 Report",
+                    callback_data="menu_report"
                 ),
 
                 InlineKeyboardButton(
-                    text="📅 Today",
-                    callback_data="today"
+                    "💳 Wallet",
+                    callback_data="menu_wallet"
                 )
+
             ],
 
             [
+
                 InlineKeyboardButton(
-                    text="📆 Week",
-                    callback_data="week"
+                    "📈 Budget",
+                    callback_data="menu_budget"
                 ),
 
                 InlineKeyboardButton(
-                    text="🗓 Month",
-                    callback_data="month"
+                    "⚙️ Admin",
+                    callback_data="menu_admin"
                 )
+
             ],
 
             [
-                InlineKeyboardButton(
-                    text="📜 History",
-                    callback_data="history"
-                ),
 
                 InlineKeyboardButton(
-                    text="📊 Summary",
-                    callback_data="summary"
+                    "❓ Help",
+                    callback_data="menu_help"
                 )
-            ],
 
-            [
-                InlineKeyboardButton(
-                    text="💵 Budget",
-                    callback_data="budget"
-                ),
-
-                InlineKeyboardButton(
-                    text="📤 Export",
-                    callback_data="export"
-                )
-            ],
-
-            [
-                InlineKeyboardButton(
-                    text="❤️ Health",
-                    callback_data="health"
-                ),
-
-                InlineKeyboardButton(
-                    text="❓ Help",
-                    callback_data="help"
-                )
             ]
+
         ]
+
     )

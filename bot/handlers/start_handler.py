@@ -1,44 +1,19 @@
-from telegram import Update
-from telegram.ext import ContextTypes
+from bot.keyboards.home_keyboard import home_keyboard
 
-from bot.keyboards.home_keyboard import (
-    get_home_keyboard
-)
-
-
-async def start(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def start(update, context):
 
     text = """
+
 💰 <b>My Family Budget Tracker</b>
 
-<i>Family Finance Platform</i>
+Family Finance Platform
 
-━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━
 
-Selamat datang 👋
+Selamat datang.
 
-Kelola seluruh keuangan keluarga dalam satu tempat.
+Silakan pilih menu di bawah.
 
-✨ Fitur Utama
-
-💸 Catat transaksi
-
-👛 Kelola Wallet
-
-📊 Dashboard Interaktif
-
-💰 Budget Management
-
-📈 Financial Report
-
-📤 Export CSV / Excel
-
-━━━━━━━━━━━━━━━━━━
-
-👇 Pilih menu di bawah.
 """
 
     await update.message.reply_text(
@@ -47,6 +22,6 @@ Kelola seluruh keuangan keluarga dalam satu tempat.
 
         parse_mode="HTML",
 
-        reply_markup=get_home_keyboard()
+        reply_markup=home_keyboard()
 
     )
