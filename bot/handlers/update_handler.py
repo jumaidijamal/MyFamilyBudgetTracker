@@ -85,7 +85,7 @@ def format_rupiah(
 
 
 # ==========================
-# /update
+# /Lapor
 # ==========================
 
 async def update_transaction(
@@ -124,12 +124,12 @@ async def update_transaction(
                 .message
                 .reply_text(
                     "📌 Format:\n\n"
-                    "/update\n\n"
-                    "expense\n"
-                    "25000\n"
-                    "makan\n"
-                    "bca\n"
-                    "nasi goreng"
+                    "/lapor\n\n"
+                    "[Type] contoh: income, expense, savings\n"
+                    "[Amount] contoh: 25000\n"
+                    "[Category] contoh: makan\n"
+                    "[Wallet] contoh: bca\n"
+                    "[Description] contoh: nasi goreng"
                 )
             )
 

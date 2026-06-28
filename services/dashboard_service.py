@@ -24,19 +24,6 @@ class DashboardService:
     # ====================================
 
     def get_transactions_df(self):
-        
-        now = time.time()
-
-        if (
-            self._df_cache is not None
-            and
-            (
-                now
-                - self._last_refresh
-            )
-            < self._cache_seconds
-        ):
-            return self._df_cache
 
         records = self.sheet.get_all_records(
             "Transactions"
@@ -51,13 +38,10 @@ class DashboardService:
             df["TransactionDate"]
         )
 
-        df["Amount"] = (
-            pd.to_numeric(
-                df["Amount"],
-                errors="coerce"
-            )
-            .fillna(0)
-        )
+        df["Amount"] = pd.to_numeric(
+            df["Amount"],
+            errors="coerce"
+        ).fillna(0)
 
         df["Type"] = (
             df["Type"]
@@ -66,8 +50,6 @@ class DashboardService:
             .str.strip()
         )
 
-        self._df_cache = df
-        self._last_refresh = now
         return df
 
     # ====================================

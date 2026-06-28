@@ -20,5 +20,5 @@ DASHBOARD_URL = os.getenv(
 )
 
 INCOME_TYPE = "income"
-EXPENSE_TYPE = "expenses"
+EXPENSE_TYPE = "expense"
 SAVINGS_TYPE = "savings"

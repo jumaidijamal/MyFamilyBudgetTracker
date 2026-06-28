@@ -8,7 +8,7 @@ COMMANDS = [
 
     "/start",
     "/help",
-    "/update",
+    "/lapor",
     "/edit",
     "/delete",
     "/balance",
