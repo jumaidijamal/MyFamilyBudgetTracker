@@ -14,10 +14,7 @@ async def help_callback(update, context):
 
     if data == "menu_help":
 
-        update.message = query.message
-
         await help_command(update, context)
-
         return
 
 

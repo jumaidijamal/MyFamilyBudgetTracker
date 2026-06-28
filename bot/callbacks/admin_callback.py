@@ -28,15 +28,13 @@ async def admin_callback(update, context):
 
 
     if data == "admin_health":
-
-        # update.message = query.message
+        
         await health(update, context)
         return
 
 
     if data == "admin_panel":
 
-        # update.message = query.message
         await admin(update, context)
         return
 

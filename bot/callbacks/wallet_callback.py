@@ -28,7 +28,6 @@ async def wallet_callback(update, context):
 
     if data == "wallet_balance":
 
-        update.message = query.message
         await balance(update, context)
         return
 
