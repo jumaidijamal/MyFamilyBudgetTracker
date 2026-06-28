@@ -11,8 +11,12 @@ from bot.callbacks.export_callback import export_callback
 
 def register_callbacks(app):
 
+    # HOME MENU ONLY
     app.add_handler(
-        CallbackQueryHandler(home_callback)
+        CallbackQueryHandler(
+            home_callback,
+            pattern="^(menu_|back_home$)"
+        )
     )
 
     app.add_handler(
@@ -39,20 +43,20 @@ def register_callbacks(app):
     app.add_handler(
         CallbackQueryHandler(
             admin_callback,
-            pattern="^admin_"
+            pattern="^(admin_|menu_admin$)"
         )
     )
 
     app.add_handler(
         CallbackQueryHandler(
             help_callback,
-            pattern="^help_"
+            pattern="^help_|^menu_help$"
         )
     )
 
     app.add_handler(
         CallbackQueryHandler(
             export_callback,
-            pattern="^export_|^admin_export$"
+            pattern="^(export_|admin_export$)"
         )
     )

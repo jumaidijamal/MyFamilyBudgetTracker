@@ -17,6 +17,7 @@ async def home_callback(update, context):
     await query.answer()
 
     data = query.data
+    print(query.data)
 
     # ==========================
     # HOME MENU
