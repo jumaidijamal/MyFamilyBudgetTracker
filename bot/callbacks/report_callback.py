@@ -13,6 +13,9 @@ async def report_callback(update, context):
     query = update.callback_query
 
     await query.answer()
+    
+    print("REPORT CALLBACK")
+    print(query.data)
 
     data = query.data
 
