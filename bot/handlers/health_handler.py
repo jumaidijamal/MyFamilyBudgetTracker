@@ -70,10 +70,14 @@ async def health(
 {data['server_time']}
 """
 
-    await (
-        update
-        .message
-        .reply_text(
+    if update.callback_query:
+
+        await update.callback_query.edit_message_text(
             message
         )
-    )
+
+    else:
+
+        await update.message.reply_text(
+            message
+        )
