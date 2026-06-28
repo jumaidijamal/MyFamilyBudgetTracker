@@ -11,8 +11,7 @@ def report_keyboard():
             [
 
                 InlineKeyboardButton(
-                    #"📅 Today",
-                    "🔥 TODAY TEST 🔥",
+                    "📅 Today",
                     callback_data="report_today"
                 ),
 

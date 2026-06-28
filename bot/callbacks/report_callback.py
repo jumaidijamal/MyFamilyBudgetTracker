@@ -37,38 +37,39 @@ async def report_callback(update, context):
 
     if data == "report_today":
 
-        await query.edit_message_text(
-            build_today_message()
-        )
+        await today(update, context)
         return
 
 
     if data == "report_week":
 
-        update.message = query.message
         await week(update, context)
         return
 
 
     if data == "report_month":
 
-        update.message = query.message
         await month(update, context)
         return
 
 
     if data == "report_history":
 
-        update.message = query.message
         await history(update, context)
         return
-
+    
 
     if data == "report_summary":
 
-        update.message = query.message
         await summary(update, context)
         return
+    
+    
+    # if data == "report_summary":
+
+    #     update.message = query.message
+    #     await summary(update, context)
+    #     return
 
 
     if data == "back_home":

@@ -44,13 +44,17 @@ async def history(
 
     if not rows:
 
-        await (
-            update
-            .message
-            .reply_text(
+        if update.callback_query:
+
+            await update.callback_query.edit_message_text(
                 "📭 Belum ada transaksi."
             )
-        )
+
+        else:
+
+            await update.message.reply_text(
+                "📭 Belum ada transaksi."
+            )
 
         return
 
@@ -98,10 +102,14 @@ async def history(
             f"\n━━━━━━━━━━\n\n"
         )
 
-    await (
-        update
-        .message
-        .reply_text(
+    if update.callback_query:
+
+        await update.callback_query.edit_message_text(
             message
         )
-    )
+
+    else:
+
+        await update.message.reply_text(
+            message
+        )
