@@ -7,6 +7,8 @@ from bot.handlers.month_handler import month
 from bot.handlers.history_handler import history
 from bot.handlers.summary_handler import summary
 
+from bot.handlers.today_handler import build_today_message
+
 
 async def report_callback(update, context):
 
@@ -35,8 +37,9 @@ async def report_callback(update, context):
 
     if data == "report_today":
 
-        update.message = query.message
-        await today(update, context)
+        await query.edit_message_text(
+            build_today_message()
+        )
         return
 
 

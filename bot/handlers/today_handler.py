@@ -1,55 +1,32 @@
 from datetime import date
 
 from telegram import Update
-from telegram.ext import (
-    ContextTypes
-)
+from telegram.ext import ContextTypes
 
-from config import (
+from config import SPREADSHEET_ID
+
+from services.sheet_service import SheetService
+from services.report_service import ReportService
+
+from utils.money_helper import MoneyHelper
+
+
+sheet_service = SheetService(
     SPREADSHEET_ID
 )
 
-from services.sheet_service import (
-    SheetService
+report_service = ReportService(
+    sheet_service
 )
 
-from services.report_service import (
-    ReportService
-)
 
-from utils.money_helper import (
-    MoneyHelper
-)
+# ======================================
+# BUILD TODAY MESSAGE
+# ======================================
 
-# ==========================
-# SERVICES
-# ==========================
+def build_today_message():
 
-sheet_service = (
-    SheetService(
-        SPREADSHEET_ID
-    )
-)
-
-report_service = (
-    ReportService(
-        sheet_service
-    )
-)
-
-# ==========================
-# /today
-# ==========================
-
-async def today(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
-
-    summary = (
-        report_service
-        .get_today_summary()
-    )
+    summary = report_service.get_today_summary()
 
     message = (
         "📅 Today Summary\n"
@@ -70,32 +47,33 @@ async def today(
 
     if summary["categories"]:
 
-        message += (
-            "\n\n📊 Top Categories\n"
-        )
+        message += "\n\n📊 Top Categories\n"
 
         sorted_categories = sorted(
-            summary[
-                "categories"
-            ].items(),
+            summary["categories"].items(),
             key=lambda x: x[1],
             reverse=True
         )
 
-        for name, amount in (
-            sorted_categories[:5]
-        ):
+        for name, amount in sorted_categories[:5]:
 
             message += (
-                f"{name}"
-                f" : "
+                f"{name} : "
                 f"{MoneyHelper.format_rupiah(amount)}\n"
             )
 
-    await (
-        update
-        .message
-        .reply_text(
-            message
-        )
+    return message
+
+
+# ======================================
+# /today
+# ======================================
+
+async def today(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+
+    await update.message.reply_text(
+        build_today_message()
     )
