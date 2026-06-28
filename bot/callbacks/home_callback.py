@@ -1,17 +1,15 @@
-from telegram import Update
-from telegram.ext import (
-    CallbackQueryHandler,
-    ContextTypes
-)
+from telegram.ext import CallbackQueryHandler
 
-from bot.keyboards.report_keyboard import report_keyboard
-from bot.keyboards.admin_keyboard import admin_keyboard
+from bot.callbacks.report_callback import report_callback
+from bot.callbacks.wallet_callback import wallet_callback
+from bot.callbacks.budget_callback import budget_callback
+from bot.callbacks.admin_callback import admin_callback
+from bot.callbacks.help_callback import help_callback
+
+from bot.keyboards.home_keyboard import home_keyboard
 
 
-async def home_callback(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def home_callback(update, context):
 
     query = update.callback_query
 
@@ -21,16 +19,39 @@ async def home_callback(
 
     if data == "menu_report":
 
-        await query.edit_message_text(
-            text="📈 Report Menu",
-            reply_markup=report_keyboard()
-        )
+        await report_callback(update, context)
+        return
 
-    elif data == "menu_admin":
+    if data == "menu_wallet":
+
+        await wallet_callback(update, context)
+        return
+
+    if data == "menu_budget":
+
+        await budget_callback(update, context)
+        return
+
+    if data == "menu_admin":
+
+        await admin_callback(update, context)
+        return
+
+    if data == "menu_help":
+
+        await help_callback(update, context)
+        return
+
+
+    if data == "back_home":
 
         await query.edit_message_text(
-            text="⚙️ Admin Menu",
-            reply_markup=admin_keyboard()
+
+            "💰 My Family Budget Tracker\n\n"
+            "Silakan pilih menu.",
+
+            reply_markup=home_keyboard()
+
         )
 
 

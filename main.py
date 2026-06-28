@@ -1,9 +1,11 @@
-from telegram.ext import (
-    Application,
-    CommandHandler
-)
+# from telegram.ext import (
+#     Application,
+#     CommandHandler
+# )
 
 from config import BOT_TOKEN
+
+from telegram import BotCommand
 
 from bot.handlers.start_handler import start
 from bot.handlers.help_handler import help_command
@@ -21,20 +23,15 @@ from bot.handlers.health_handler import health
 from bot.handlers.admin_handler import admin
 from bot.handlers.export_handler import export
 from bot.handlers.setbudget_handler import setbudget
-from telegram import BotCommand
-from bot.callbacks.home_callback import handler as home_callback_handler
-from telegram.ext import CallbackQueryHandler
-from bot.callbacks.home_callback import home_callback
+from bot.handlers.unknown_handler import unknown
+
+from bot.callbacks import register_callbacks
 
 from telegram.ext import (
     Application,
     CommandHandler,
     MessageHandler,
     filters
-)
-
-from bot.handlers.unknown_handler import (
-    unknown
 )
 
 async def post_init(application):
@@ -234,13 +231,7 @@ app.add_handler(
 # ==========================
 # /HOME CALLBACK
 # ==========================
-app.add_handler(
-    home_callback_handler
-)
-
-app.add_handler(
-    CallbackQueryHandler(home_callback)
-)
+register_callbacks(app)
 
 print(
     "Bot Running..."

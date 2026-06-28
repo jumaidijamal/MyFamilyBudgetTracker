@@ -1,5 +1,6 @@
-from telegram import InlineKeyboardMarkup
 from telegram import InlineKeyboardButton
+from telegram import InlineKeyboardMarkup
+
 
 def admin_keyboard():
 
@@ -10,26 +11,19 @@ def admin_keyboard():
             [
 
                 InlineKeyboardButton(
-                    "📁 Export",
-                    callback_data="admin_export"
-                )
 
-            ],
-
-            [
-
-                InlineKeyboardButton(
-                    "💰 Budget",
-                    callback_data="admin_budget"
-                )
-
-            ],
-
-            [
-
-                InlineKeyboardButton(
                     "❤️ Health",
+
                     callback_data="admin_health"
+
+                ),
+
+                InlineKeyboardButton(
+
+                    "📤 Export",
+
+                    callback_data="admin_export"
+
                 )
 
             ],
@@ -37,8 +31,23 @@ def admin_keyboard():
             [
 
                 InlineKeyboardButton(
+
+                    "⚙️ Admin",
+
+                    callback_data="admin_panel"
+
+                )
+
+            ],
+
+            [
+
+                InlineKeyboardButton(
+
                     "⬅️ Back",
+
                     callback_data="back_home"
+
                 )
 
             ]
